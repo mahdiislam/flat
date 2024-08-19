@@ -1,9 +1,13 @@
 import * as core from '@actions/core'
 import { exec } from '@actions/exec'
 
-const filesHaveZeroDeltaBytes = (files: any[]) => {
+const deltaBytesSumForFilesIsZero = (files: any[]) => {
   const totalDetlaBytesForAllFiles = files.reduce((curr, prev) => 
-    isNaN(curr.deltaBytes) ? 0 : curr.deltaBytes + isNaN(prev.deltaBytes) ? 0 : prev.deltaBytes, 0)
+  {
+    core.info(`File ${curr.name} has ${curr.deltaBytes} changed bytes`)
+    return isNaN(curr.deltaBytes) ? 0 : curr.deltaBytes + isNaN(prev.deltaBytes) ? 0 : prev.deltaBytes
+  }, 0)
+  core.info(`Total ${totalDetlaBytesForAllFiles} changed bytes`)
   return totalDetlaBytesForAllFiles === 0
 }
 
@@ -30,7 +34,7 @@ const run = async () => {
   const msg = `Flat: latest data (${date})`
 
   // Don't want to commit if there aren't any files changed!
-  if (!files.length || filesHaveZeroDeltaBytes(files)) return
+  if (!files.length || deltaBytesSumForFilesIsZero(files)) return
 
   // these should already be staged, in main.ts
   core.info(`Committing "${msg}"`)
