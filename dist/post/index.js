@@ -30,6 +30,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(186));
 const exec_1 = __nccwpck_require__(514);
 const deltaBytesSumForFilesIsZero = (files) => {
+    core.info(JSON.stringify(files, null, 2));
     const totalDetlaBytesForAllFiles = files.reduce((curr, prev) => {
         core.info(`File ${curr.name} has ${curr.deltaBytes} changed bytes`);
         return isNaN(curr.deltaBytes) ? 0 : curr.deltaBytes + isNaN(prev.deltaBytes) ? 0 : prev.deltaBytes;
