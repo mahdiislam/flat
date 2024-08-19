@@ -2,7 +2,6 @@ import * as core from '@actions/core'
 import { exec } from '@actions/exec'
 
 const deltaBytesSumForFilesIsZero = (files: any[]) => {
-  core.info(JSON.stringify(files, null, 2))
   const totalDetlaBytesForAllFiles = files.reduce((curr, prev) => 
   {
     core.info(`File ${curr.name} has ${curr.deltaBytes} changed bytes`)
