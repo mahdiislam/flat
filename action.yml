@@ -1,4 +1,4 @@
-name: 'Flat Data'
+name: 'Flat Data - Post job cleanup fix'
 description: 'The GitHub action which powers data fetching for Flat'
 author: 'GitHub OCTO'
 inputs:
