@@ -29,12 +29,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(186));
 const exec_1 = __nccwpck_require__(514);
-const deltaBytesSumForFilesIsZero = (files) => {
-    const totalDetlaBytesForAllFiles = files.reduce((curr, prev) => {
-        core.info(`File ${curr.name} has ${curr.deltaBytes} changed bytes`);
-        return isNaN(curr.deltaBytes) ? 0 : curr.deltaBytes + isNaN(prev.deltaBytes) ? 0 : prev.deltaBytes;
-    }, 0);
-    core.info(`Total ${totalDetlaBytesForAllFiles} changed bytes`);
+const filesHaveZeroDeltaBytes = (files) => {
+    const totalDetlaBytesForAllFiles = files.reduce((curr, prev) => isNaN(curr.deltaBytes) ? 0 : curr.deltaBytes + isNaN(prev.deltaBytes) ? 0 : prev.deltaBytes, 0);
     return totalDetlaBytesForAllFiles === 0;
 };
 const run = async () => {
@@ -52,7 +48,7 @@ const run = async () => {
     }, undefined, 2);
     const msg = `Flat: latest data (${date})`;
     // Don't want to commit if there aren't any files changed!
-    if (!files.length || deltaBytesSumForFilesIsZero(files))
+    if (!files.length || filesHaveZeroDeltaBytes(files))
         return;
     // these should already be staged, in main.ts
     core.info(`Committing "${msg}"`);
