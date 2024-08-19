@@ -1,6 +1,12 @@
 import * as core from '@actions/core'
 import { exec } from '@actions/exec'
 
+const filesHaveZeroDeltaBytes = (files: any[]) => {
+  const totalDetlaBytesForAllFiles = files.reduce((curr, prev) => 
+    isNaN(curr.deltaBytes) ? 0 : curr.deltaBytes + isNaN(prev.deltaBytes) ? 0 : prev.deltaBytes, 0)
+  return totalDetlaBytesForAllFiles === 0
+}
+
 const run = async () => {
   core.startGroup('Post cleanup script')
 
@@ -24,7 +30,7 @@ const run = async () => {
   const msg = `Flat: latest data (${date})`
 
   // Don't want to commit if there aren't any files changed!
-  if (!files.length) return
+  if (!files.length || filesHaveZeroDeltaBytes(files)) return
 
   // these should already be staged, in main.ts
   core.info(`Committing "${msg}"`)
