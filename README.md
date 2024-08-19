@@ -1,3 +1,5 @@
+This is a fork of Flat Data action repo [githubocto/flat](https://github.com/githubocto/flat) to fix an issue where cleanup script will throw an error when there is no changes in the data managed by the action.
+
 <p align="center">
   <img src="docs/logo.png" width=400>
 </p>
